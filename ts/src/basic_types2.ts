@@ -7,7 +7,7 @@ enum Color {
   Blue, //2
   Orange = 10
 }
-// if no number is not assied, then default value is index.
+// if no number is not assigned, then default value is index.
 let c: Color = Color.Orange;
 let d: string = Color[1]; // valueを取り出したい場合型はstring
 clog(c);
@@ -16,7 +16,7 @@ clog(d);
 // void type only can be defined null or undefined.
 let unusuable: void = null;
 unusuable = undefined;
-// and actully you can use like this.
+// and actually you can use like this.
 let mynull: null = null;
 let myundefined: undefined = undefined;
 //**** */

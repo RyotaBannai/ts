@@ -24,17 +24,17 @@ let p = new Person('Mike', 'Male');
 p.show()
 
 // constructorからpropertyへのセットを簡略化
-// constrcutor の引数の型に「修飾子」をつけるだけ
+// constructor の引数の型に「修飾子」をつけるだけ
 class Person2{
   constructor(private _name: string, private _sex: string, private _age: number){}
   public show(): void{ // statements
     clog(`${this._name} is ${this._sex}.`);
   }
-  // getter (accesser)
+  // getter (accessor)
   get name(): string {
     return this._name;
   }
-  // setter (accesser)
+  // setter (accessor)
   set name(name: string){
     if (typeof name === 'string'){
       this._name = name;

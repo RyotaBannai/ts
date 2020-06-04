@@ -9,7 +9,7 @@ function sum(...values:number[]){
   return result
 }
 
-// ああ、こう言うのpythonic だとlistで渡したくなる
+// ああ、こう言うの pythonista だとlistで渡したくなる
 // clog(sum([1,2,3]))  => x
 clog(sum(1,2,3)) // => o
-clog(sum(...[1,2,3])) // それでもpythonicはlistを使う
+clog(sum(...[1,2,3])) // それでも pythonista はlistを使う

@@ -1,7 +1,7 @@
 import { clog } from "./library/generic";
 
 // abstract継承ではなくinterfaceを使う.
-// 複数のinterfaxceを実装できる
+// 複数のinterfaceを実装できる
 
 interface Figure {
   // メソッドは全て抽象メソッド
@@ -68,13 +68,15 @@ class Jobs2 {
     return `${this._tool} is my favorite thing to do in my free time.`;
   }
 }
-// Jobs2は明示的にTodo interfaceを実装していないが
+// Jobs2 は明示的にTodo interface を実装していないが
 // Todo型の変数structural_subtyping にオブジェクトを代入できている.
 // 構造的部分型 Structural Subtyping => 型の相互性があるかどうかを見る
+let structural_subtyping: Todo = new Jobs2();
 
+// Jobs class が例
 // Java やC# のように継承・実装することのみによって、相互性を判定するアプローチは
 // 公称的部分型 Nominal Subtyping
-let structural_subtyping: Todo = new Jobs2();
+
 
 // 型注釈としてのinterface
 let mytodo: Todo = {

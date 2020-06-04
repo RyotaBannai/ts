@@ -1,4 +1,5 @@
 import {clog} from "./library/generic"
+
 class Person{ //スーパークラス、親クラス、基底クラス
   constructor(protected _name: string, protected _sex: string){}
   public show(): void{

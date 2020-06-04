@@ -33,7 +33,7 @@ clog(square(1))
 // typeof演算子で型を判定し、結果に応じて条件式で処理を分けること == 型ガード
 function process(value: string | number){
   if(typeof value == 'string')
-    return value.toUppperCase();
+    return value.toUpperCase();
   else {
     return value.toFixed(1);
   }

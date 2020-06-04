@@ -49,7 +49,7 @@ clog(multi_array2[0]);
 
 let omg1: number[] = new Array(5); //size of 5
 let omg2: number[] = new Array(1, 2, 3); //size of 3
-// let omg3: number[] = new Array(-5); // thus this is fucking error. but why the hell compling doesn't catch? lol
+// let omg3: number[] = new Array(-5); // thus this is fucking error. but why the hell compiling doesn't catch? lol
 let ohyah: number[] = [];
 
 let obj: { [index: string]: string } = {

@@ -5,7 +5,7 @@ function merge<T, R>(ob1: T, ob2: R): T & R {
   let result = <T & R>{};
   // もしメンバーが重複した場合はアタのオブジェクトを優先
   for (let key in ob1) {
-    // (<any> whatever) this is a cast: Type Asserrion
+    // (<any> whatever) this is a cast: Type Assertion
     // (whatever as any) this is a cast
     (<any>result)[key] = ob1[key];
 

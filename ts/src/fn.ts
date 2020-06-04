@@ -7,7 +7,7 @@ import {test_export, test, clog} from './functions'
 // 2. 関数リテラル
 // 3. アロー関数
 
-// python の型宣言と「同じやん
+// python の型宣言と同じ
 function triangle(base: number, height: number): number{
   return base* height/ 2;
 }
@@ -16,7 +16,7 @@ test_export()
 test()
 
 // 関数リテラル 
-// Python で言う lamnda関数のような感じ.
+// Python のlambda 関数
 let lit_triangle = function(base: number, height: number) : number
 {
   return base* height/ 2;
