@@ -1,3 +1,6 @@
+### tsconf
+- https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-1.html
+
 ### Important to know.
 -  `Type assertions (キャスト)` Type assertions を使うと、実際のデータがどうであろうが強制的に型情報を書き換えてしまえるので、有り難い Typescript の型チェックをすり抜けてしまう
 - `自動推論`：コンパイラは、`特定の項目を読み込み専用に自動的に推論することができる`。例えば、クラス内で `getter` しか持たず `setter` を持たないプロパティは、読み取り専用とみなされる。
@@ -22,5 +25,6 @@ function iMutateO(arg: {myP: number}) {
 ```
 - `Type`は既存`Interface`（他の関数・クラスなどでも良い）を`manipulateするもの`。つまりプロパティをreadonlyにしたり、オプショナルにしたり。
 - keyof, extends keyof, in keyof(mapped type) などについて [参考](https://blog.yux3.net/entry/2017/02/08/033834)
+- index signature: T\[K\] の K
 ## 型推論
 - `+`のオペランドに`any型`が来ている場合は、もう一方が`string型`であることが判明している場合は`+`の結果が`string`となり、そうでない場合は`+`の結果も`any`となります。
