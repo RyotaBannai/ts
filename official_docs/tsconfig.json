@@ -2,9 +2,14 @@
   "allowJs": true,
   "compilerOptions": {
     // "sourceMap": true,
-    "target": "es5",
+    "target": "es2017",
+    "lib": ["dom", "es2015.promise", "es5", "es2017.object"],
     "module": "commonjs",
     "rootDir": ".",
-    "outDir": "../build/"
+    "outDir": "./build/",
+    "include":[
+      "src/*/*.ts",
+      "src/*/*/*.ts",
+    ]
   }
 }

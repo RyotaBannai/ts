@@ -1,5 +1,4 @@
 import * as _ from "lodash";
-import {clog} from "../../../ts/src/library/generic";
 
 interface Song {
     type: 'song',
@@ -35,5 +34,5 @@ const items = [
 ];
 
 _.forEach(items, function(item) {
-    clog(getPerson0(item))
+    console.log(getPerson0(item))
 });
