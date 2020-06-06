@@ -21,5 +21,6 @@ function iMutateO(arg: {myP: number}) {
 }
 ```
 - `Type`は既存`Interface`（他の関数・クラスなどでも良い）を`manipulateするもの`。つまりプロパティをreadonlyにしたり、オプショナルにしたり。
+- keyof, extends keyof, in keyof(mapped type) などについて [参考](https://blog.yux3.net/entry/2017/02/08/033834)
 ## 型推論
 - `+`のオペランドに`any型`が来ている場合は、もう一方が`string型`であることが判明している場合は`+`の結果が`string`となり、そうでない場合は`+`の結果も`any`となります。
