@@ -8,8 +8,8 @@ interface dataType {
  * Make all properties in T nullable
  */
 type _Nullable<T> = {
-    [P in keyof T]?: T[P];
-    //[P in keyof T]: T[P] | null  // これでもok
+    //[P in keyof T]?: T[P]; // これはpartial
+    [P in keyof T]: T[P] | null  // これでもok
 }
 
 type strDataType = _Nullable<dataType>
