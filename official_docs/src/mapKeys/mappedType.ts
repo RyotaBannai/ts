@@ -1,5 +1,5 @@
 type _Readonly<T> = {
-    readonly [P in keyof T]: T[P];
+    readonly [P in keyof T]: T[P]; // インデックスのシグネチャ
 }
 
 interface dataType {
@@ -15,6 +15,6 @@ let my_data: MyReadonly = {
     name: 'China',
 };
 
-my_data.age = 1;
+// my_data.age = 1; // an error cause of re-assigning value to readonly var
 
 export {};
