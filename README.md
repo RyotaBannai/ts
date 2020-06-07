@@ -34,5 +34,13 @@ function iMutateO(arg: {myP: number}) {
 npm install --save-dev @types/lodash
 npm install --save lodash
 ```
+### Conditional types
+- `type MyCondition<T, U, X, Y> = T extends U ? X : Y;` ->「 `T が U に`代入可能であれば X を、そうでなければ Y 」
+- `Distributive conditional types`: For example, an instantiation of `T extends U ? X : Y` with the type argument `A | B | C for T` is resolved `as (A extends U ? X : Y) | (B extends U ? X : Y) | (C extends U ? X : Y)`. `T` refers to the individual constituents _after_ `the conditional type is distributed over the union type` Furthermore, references to T within X have an additional type parameter constraint U (i.e. `T is considered assignable to U within X`).
+- conditional types are not permitted to reference themselves recursively.
+```typescript
+type ElementType<T> = T extends any[] ? ElementType<T[number]> : T;  // Error
+```
+- `Type inference in conditional types` : `Within the extends clause of a conditional type`, it is now possible to have `infer declarations` that introduce a type variable to be inferred. Such inferred type variables `may be referenced in the true branch of the conditional type`. It is possible to have `multiple infer locations for the same type variable`.
 ## 型推論
 - `+`のオペランドに`any型`が来ている場合は、もう一方が`string型`であることが判明している場合は`+`の結果が`string`となり、そうでない場合は`+`の結果も`any`となります。
