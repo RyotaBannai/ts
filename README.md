@@ -28,5 +28,11 @@ function iMutateO(arg: {myP: number}) {
 - index signature: T\[K\] の K
 - `proxy wrapping another type` [参考](https://stackoverflow.com/questions/49364282/how-to-convert-interface-to-mapped-type-in-typescript)
 - keyof: That’s because this kind of transformation is `homomorphic`, which means that `the mapping applies only to properties of T and no others`
+- `conditional types`: conditional types adds the ability to express `non-uniform type mappings`
+- if you need to add types for library.
+```bash
+npm install --save-dev @types/lodash
+npm install --save lodash
+```
 ## 型推論
 - `+`のオペランドに`any型`が来ている場合は、もう一方が`string型`であることが判明している場合は`+`の結果が`string`となり、そうでない場合は`+`の結果も`any`となります。
