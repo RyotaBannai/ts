@@ -7,6 +7,7 @@
     "module": "commonjs",
     "rootDir": ".",
     "outDir": "./build/",
+    "experimentalDecorators": true
   },
   "include":[
     "src/*/*.ts",

@@ -1,4 +1,5 @@
-import {proxyProps, Proxify, User } from './wrap'
+import {proxyProps, User } from './wrap'
+import type {Proxy, Proxify} from "./wrap"; // Importing Types
 
 function unproxify<T>(t: Proxify<T>): T {
     let result = {} as T;

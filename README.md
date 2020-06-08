@@ -63,5 +63,23 @@ NonNullable<T> – Exclude null and undefined from T.
 ReturnType<T> – Obtain the return type of a function type.
 InstanceType<T> – Obtain the instance type of a constructor function type.
 ```
+### export and import 
+- When exporting a module using export =, TypeScript-specific import module = require("module") must be used to import the module.
+- Some libraries are designed to be used in many module loaders, or with no module loading (global variables). These are known as UMD modules. These libraries can be accessed through either an import or a global variable -> It can also be used as a global variable, but only inside of a `script`. (A script is `a file with no imports or exports`.)
+### Decrator
+- `Decorators` provide a way to add both `annotations` and a `meta-programming syntax` for `class declarations and members`.
+- A Decorator is a special kind of declaration that `can be attached to a class declaration, method, accessor, property, or parameter`. 
+- Decorators use the form `@expression`, where `expression must evaluate to a function` that will be called at runtime with information about the decorated declaration. (the same as Python's decorator) For example, given the decorator @sealed we might write the sealed function as follows:
+```typescript
+function sealed(target) {
+    // do something with 'target' ...
+}
+```
+- `Multiple decorators on a single declaration` in TypeScript:
+    1. The expressions for each decorator are `evaluated` `top-to-bottom`.
+    2. The results are then `called` as functions from `bottom-to-top`.
+#### Decorator Factories
+- A Decorator Factory is simply `a function` that `returns the expression that will be called by the decorator at runtime`.
+
 ## 型推論
 - `+`のオペランドに`any型`が来ている場合は、もう一方が`string型`であることが判明している場合は`+`の結果が`string`となり、そうでない場合は`+`の結果も`any`となります。

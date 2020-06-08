@@ -39,5 +39,6 @@ console.log(proxyProps.name.get());
 export {
     proxyProps,
     Proxify,
+    Proxy,
     User,
 }
