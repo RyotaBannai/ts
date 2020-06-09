@@ -80,6 +80,40 @@ function sealed(target) {
     2. The results are then `called` as functions from `bottom-to-top`.
 #### Decorator Factories
 - A Decorator Factory is simply `a function` that `returns the expression that will be called by the decorator at runtime`.
+### Mixin
+- Mixin is interface that you don't need to implement defined members but child class can just have parent class's members to use instead.
+```typescript
+// Disposable Mixin
+class Disposable {
+    isDisposed: boolean;
+    dispose() { this.isDisposed = true; }
+}
+// Activatable Mixin
+class Activatable {
+    isActive: boolean;
+    activate() { this.isActive = true;
+    }
+    deactivate() { this.isActive = false;}
+}
 
+class SmartObject {
+    constructor() { setInterval(() => console.log(this.isActive + " : " + this.isDisposed), 500);}
+    interact() { this.activate(); }
+}
+
+interface SmartObject extends Disposable, Activatable {}
+applyMixins(SmartObject, [Disposable, Activatable]);
+
+let smartObj = new SmartObject();
+setTimeout(() => smartObj.interact(), 1000);
+
+function applyMixins(derivedCtor: any, baseCtors: any[]) {
+    baseCtors.forEach(baseCtor => {
+        Object.getOwnPropertyNames(baseCtor.prototype).forEach(name => {
+            Object.defineProperty(derivedCtor.prototype, name, Object.getOwnPropertyDescriptor(baseCtor.prototype, name));
+        });
+    });
+}
+```
 ## 型推論
 - `+`のオペランドに`any型`が来ている場合は、もう一方が`string型`であることが判明している場合は`+`の結果が`string`となり、そうでない場合は`+`の結果も`any`となります。
