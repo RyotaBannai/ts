@@ -117,3 +117,14 @@ function applyMixins(derivedCtor: any, baseCtors: any[]) {
 ```
 ## 型推論
 - `+`のオペランドに`any型`が来ている場合は、もう一方が`string型`であることが判明している場合は`+`の結果が`string`となり、そうでない場合は`+`の結果も`any`となります。
+
+### Do's and Don'ts
+- The following types are considered to be primitive types in JavaScript:
+    - string
+    - boolean
+    - number
+    - bigint
+    - symbol
+    - null
+    - undefined
+- and `all other types are considered to be non-primitive types`. The new `object` type represents exactly these:  
