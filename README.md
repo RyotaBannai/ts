@@ -117,7 +117,167 @@ function applyMixins(derivedCtor: any, baseCtors: any[]) {
 ```
 ## 型推論
 - `+`のオペランドに`any型`が来ている場合は、もう一方が`string型`であることが判明している場合は`+`の結果が`string`となり、そうでない場合は`+`の結果も`any`となります。
+- `型註釈`: `const a: number = 3;`
+- `リテラル型のwidening`: `constとは異なり`、`varやlet`に代入された式がリテラル型の場合はそれらはリテラル型ではない型に変換されます。例えば、123型はnumber型に、"foobar"型はstring型に変換されます。このように、リテラル型からそれに対応するプリミティブ型に変換される挙動をwideningという。varやletの場合でも変数宣言に型註釈をつけることが可能:
+```typescript
+// 変数 a は 123 型
+let a: 123 = 123;
+a = 456; // Error
+```
+- 「宣言後に初期化されていない変数を使おうとしたらエラーを出す」
+```typescript
+// number 型の変数 a を宣言だけする
+let a: number;
+console.log(a); // error because a is still undefined.
+```
+- また、aに値が代入されていない可能性があるだけでもやはりエラー -> `let a: number | undefined;` にすれば大丈夫
+```typescript
+// number 型の変数 a を宣言だけする
+let a: number;
+if (Math.random() < 0.5) a = 123;
+console.log(a);
+```
+- union 型が発生
+```typescript
+let a;
+if (Math.random() < 0.5) a = 123;
+console.log(a); // a は number | undefined 型
+```
+- 関数の中で代入してるからnumber方になると思いきや、tsの型決定は関数まではみないため、typeはundefinedでvalueはstringみたいなことが起きてしまう。
+```typescript
+let a;
 
+// ここでは a は undefined 型
+console.log(a);
+const u: undefined = a;
+
+change_a();
+
+// ここで a は undefined 型
+const num: undefined = a;
+console.log(a); // "123" が表示される
+
+function change_a() {
+    a = "123";
+}
+```
+- 自動でstring型になるが、後からnull を代入することもできる。
+```typescript
+let stringOrNull: string | null = "abcde";
+```
+- オブジェクトリテラルの型の推論でもproperty に windeningが働く(後から中身を変更できるようするため)（配列リテラルの場合も同様）
+```typescript
+const obj = {
+  foo: "hello", // string type instead of 'hello' type
+  bar: 123,``
+};
+```
+- windening を抑制したならば `as const` を使う
+```typescript
+// 変数 a の型は string ではなく "foo"
+let a = "foo" as const;
+// 変数 b の型は { readonly foo: "foobar" }
+const b = {
+  foo: "foobar"
+} as const;
+// 変数 c の型は readonly ["foo", 123]
+const c = ["foo", 123] as const;
+```
+#### 論理演算子の型推論
+- const の場合、再代入されることはないのでwideningは適応されない
+```typescript
+const num: number = 123;
+// or の型は number | "foobar" 型
+const or = num || "foobar";
+```
+- let の場合、再代入されることがあるためwideningは適応される。つまり、or の型は number | string 型になる。
+- 次のような場合、numが返却されるのは num = 0 またはNaNの場合なので、　and は 0 | NaN | "footbar" 型になる。しかし ts は NaN を知らない実質的には 0 | "foobar"型になる。（https://github.com/microsoft/TypeScript/pull/9407#issuecomment-229721835）
+- 
+```typescript
+const and = num && "foobar";
+```
+- `条件分岐による型の絞り込み`: `フロー解析`(「if文の中でだけ型が変わる」のような挙動)によって、エラーになる可能性（nullやundefinedにアクセス）を排除してあげれば、typeエラーを避けることができる。[参考](https://qiita.com/uhyo/items/6acb7f4ee73287d5dac0#%E6%9D%A1%E4%BB%B6%E5%88%86%E5%B2%90%E3%81%AB%E3%82%88%E3%82%8B%E5%9E%8B%E3%81%AE%E7%B5%9E%E3%82%8A%E8%BE%BC%E3%81%BF)
+- `戻り値の型の推論`: 関数の戻り値の型註釈を省略した場合は戻り値の型が推論される。wideningは適用されない。
+- return文が無い関数の場合は、返り値の型として`void型`が推論されます。一方、「`return文はあるけどreturnせずに関数が終了する場合がある`」という場合はreturnしない部分は`undefined型`を返すものとして推論されます。勝手にundefinedを推論するんじゃなくてエラーにしてほしいという場合は`--noImplicitReturns`を指定。
+- ts は`関数の中で引数がどう使われているかは見ていない`。`関数を例えばfoo(123)というように呼び出しても、これを見て引数の型が推論されるようなことも無い。これは「変数の型は宣言時に決まる」という原則により説明できる。` 
+     - この例外が:
+        -　`contextual type による引数型の推論`　関数をinterfaceで実装した時に、interfaceが型を指定しているときは、実装側で型を指定しなくても推論してくれる。
+        - Generic type
+- 一度コールバック関数を別の変数に入れようとすると上手くいかない。
+```typescript
+function callWith100(callback: (arg: number) => void) {
+  callback(100);
+}
+// ↓これは num の型を推論できないのでエラー
+const func = num => {
+  // ここでは num は number 型
+  console.log(num * 10);
+};
+callWith100(func);
+```
+```typescript
+// genertic type では引数から typeを推測
+function apply<T, R>(value: T, func: (arg: T) => R): R {
+  return func(value);
+}
+// res は string 型
+const res = apply(100, num => String(num ** 2));
+```
+- 型推論失敗例: Uの正しい型が判明するのは第3引数の型推論を行った後なのに、それより前の段階でUが必要になったためやむなくunknown型に固定されているという点です。TypeScriptは原則としてワンパスで型推論を行うため、第3引数の推論で正しいUが判明したからといって第2引数の推論をやり直すとかそういう挙動をすることはありません。
+```typescript
+function apply<T, U, R>(
+  value: T,
+  func1: (arg: U) => R,
+  func2: (arg: T) => U,
+): R {
+  return func1(func2(value));
+}
+
+function id<T>(value: T): T {
+  return value;
+}
+
+// 意図はT = number, U = string, R = boolean だが、
+// 実際の型引数の推論結果は T = number, U = unknown, R = boolean となる
+// その結果、str が unknown 型扱いになり str.length でエラーが発生
+const res = apply(100, str => str.length > 0, num => String(num ** 2));
+```
+#### オーバーロードされた関数の型推論
+- このように宣言されたfuncを呼び出す側が今回のポイントです。2つの数値を引数に渡した場合はfuncの1つ目のシグネチャ（(arg1: number, arg2: number) => number）が採用されて返り値がnumber型と推論される一方で、1つの文字列を引数に渡した場合はもう1つのシグネチャ(arg1: string) => stringが採用されて返り値はstring型になります。
+```typescript
+function func(arg1: number, arg2: number): number;
+function func(arg1: string): string;
+function func(arg1: number | string, arg2?: number): number | string {
+  if (typeof arg1 === "number") {
+    return arg1 + arg2!;
+  } else {
+    return arg1;
+  }
+}
+
+// res1 は number 型
+const res1 = func(123, 456);
+// res2 は string 型
+const res2 = func("foo");
+```
+- 配列の型推論: 変数の型が宣言時に決まるというルールを逸脱した挙動が発生します
+```typescript
+const arr = [];
+for (let i=0; i<10; i++) {
+  arr.push(String(i));
+}
+// ここでは arr の型は string[] 型
+
+arr.push(123);
+// ここでは arr の型は (string | number)[] 型
+```
+- 配列に何も入れないまま使ってもlet で宣言した変数と同様エラー
+```typescript
+const arr = [];
+arr[0]; // ここでエラー
+const arr2 = arr.slice(); //これもエラー
+```
+- [参考](https://qiita.com/uhyo/items/6acb7f4ee73287d5dac0#%E6%9D%A1%E4%BB%B6%E5%88%86%E5%B2%90%E3%81%AB%E3%82%88%E3%82%8B%E5%9E%8B%E3%81%AE%E7%B5%9E%E3%82%8A%E8%BE%BC%E3%81%BF)
 ### Do's and Don'ts
 - The following types are considered to be primitive types in JavaScript:
     - string
