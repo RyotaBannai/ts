@@ -1,11 +1,14 @@
+var frammable_trash_box:object[] = [],
+    nonflammable_trash_box:object[] = [];
+
 let Trash = function (name:string, type: string): void {
     this.name = name;
     this.type = type;
 };
 
-function repeat(trashes: object[], fn: Function): void{
+function repeat(trashes: object[], fn: Function): void {
     for(const trash of trashes){
-        fn.call(trash)
+        fn.call(trash) // callをしないとthisはObject [global]
     }
 }
 
@@ -16,9 +19,6 @@ repeat([
     ],
     separateTrash
 );
-
-var frammable_trash_box:object[] = [],
-    nonflammable_trash_box:object[] = [];
 
 function separateTrash() {
     if(this.type === 'flammable')

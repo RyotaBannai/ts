@@ -127,4 +127,18 @@ function applyMixins(derivedCtor: any, baseCtors: any[]) {
     - symbol
     - null
     - undefined
-- and `all other types are considered to be non-primitive types`. The new `object` type represents exactly these:  
+- and `all other types are considered to be non-primitive types`.
+#### Return Types of Callbacks
+- Don’t use the return type `any` for callbacks whose value will be ignored. If you don't know what type to return, then use `unknown`.
+- if you wonder whether parameter are required or not, then put `an optional parameter` with `?` callback, don't. there’s no need to make the parameter optional to accomplish this — `it’s always legal to provide a callback that accepts fewer arguments`.
+#### Order
+- Don’t put more general overloads before more specific overloads. - `TypeScript chooses the first matching overload when resolving function calls.` When an earlier overload is “more general” than a later one, the later one is effectively hidden and cannot be called.
+```typescript
+/* OK */
+declare function fn(x: HTMLDivElement): string;
+declare function fn(x: HTMLElement): number;
+declare function fn(x: any): any;
+
+var myElem: HTMLDivElement;
+var x = fn(myElem); // x: string, :)
+```
